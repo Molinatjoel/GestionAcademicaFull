@@ -1,0 +1,1263 @@
+{
+  "info": {
+    "name": "Gestion Academica API",
+    "description": "Colección completa para probar la API con protección por roles.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "jwt", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"nuevo@example.com\",\n  \"password\": \"claveSegura123\",\n  \"nombres\": \"Nuevo\",\n  \"apellidos\": \"Usuario\",\n  \"direccion\": \"Calle Principal 123\",\n  \"telefono\": \"0999999999\",\n  \"fecha_nacimiento\": \"2000-01-01\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios"]
+            }
+          }
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"María\",\n  \"apellidos\": \"Lopez Perez\",\n  \"fecha_nacimiento\": \"2005-04-10\",\n  \"direccion\": \"Av. Siempre Viva 123\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"0999999999\",\n  \"contrasena\": \"ClaveSegura123\",\n  \"estado\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"María Actualizada\",\n  \"apellidos\": \"Lopez Perez\",\n  \"fecha_nacimiento\": \"2005-04-10\",\n  \"direccion\": \"Av. Actualizada 456\",\n  \"correo\": \"maria.actualizada@example.com\",\n  \"telefono\": \"0988888888\",\n  \"estado\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "1"]
+            }
+          }
+        },
+        {
+          "name": "Asignar roles a usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/1/roles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "1", "roles"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\"docente\", \"estudiante\"]\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Listar roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/roles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "roles"]
+            }
+          }
+        },
+        {
+          "name": "Crear rol",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/roles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "roles"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_rol\": \"coordinador\",\n  \"descripcion\": \"Coordina procesos académicos\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver rol",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/roles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "roles", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar rol",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/roles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "roles", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_rol\": \"coordinador académico\",\n  \"descripcion\": \"Gestiona coordinación académica\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar rol",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/roles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "roles", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "UserRol",
+      "item": [
+        {
+          "name": "Listar user roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/userroles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "userroles"]
+            }
+          }
+        },
+        {
+          "name": "Crear user rol",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/userroles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "userroles"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_user\": 1,\n  \"id_rol\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver user rol",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/userroles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "userroles", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar user rol",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/userroles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "userroles", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_user\": 1,\n  \"id_rol\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar user rol",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/userroles/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "userroles", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cursos",
+      "item": [
+        {
+          "name": "Listar cursos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursos"]
+            }
+          }
+        },
+        {
+          "name": "Crear curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_curso\": \"Primero B\",\n  \"nivel\": \"Basica Superior\",\n  \"id_docente_titular\": 4,\n  \"estado\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver curso",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar curso",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursos", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_curso\": \"Primero B\",\n  \"nivel\": \"Basica Superior\",\n  \"id_docente_titular\": 5,\n  \"estado\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar curso",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Asignaturas",
+      "item": [
+        {
+          "name": "Listar asignaturas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaturas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "asignaturas"]
+            }
+          }
+        },
+        {
+          "name": "Crear asignatura",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaturas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "asignaturas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_asignatura\": \"Matematicas\",\n  \"descripcion\": \"Asignatura de numeros seleccionada\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver asignatura",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "asignaturas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar asignatura",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "asignaturas", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_asignatura\": \"Matematicas\",\n  \"descripcion\": \"Asignatura de numeros y algebra\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar asignatura",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "asignaturas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CursoAsignaturas",
+      "item": [
+        {
+          "name": "Listar curso-asignaturas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursoasignaturas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursoasignaturas"]
+            }
+          }
+        },
+        {
+          "name": "Crear curso-asignatura",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursoasignaturas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursoasignaturas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_curso\": 2,\n  \"id_asignatura\": 5,\n  \"id_docente\": 7\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver curso-asignatura",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursoasignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursoasignaturas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar curso-asignatura",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursoasignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursoasignaturas", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_curso\": 2,\n  \"id_asignatura\": 6,\n  \"id_docente\": 7\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar curso-asignatura",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/cursoasignaturas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cursoasignaturas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matriculas",
+      "item": [
+        {
+          "name": "Listar matriculas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/matriculas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matriculas"]
+            }
+          }
+        },
+        {
+          "name": "Crear matricula",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/matriculas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matriculas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estudiante\": 10,\n  \"id_curso\": 2,\n  \"id_periodo\": 3,\n  \"fecha_matricula\": \"2024-05-01\",\n  \"estado\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver matricula",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/matriculas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matriculas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar matricula",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/matriculas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matriculas", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estudiante\": 11,\n  \"id_curso\": 2,\n  \"id_periodo\": 3,\n  \"fecha_matricula\": \"2024-06-15\",\n  \"estado\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar matricula",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/matriculas/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matriculas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Calificaciones",
+      "item": [
+        {
+          "name": "Listar calificaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/calificaciones",
+              "host": ["{{base_url}}"],
+              "path": ["api", "calificaciones"]
+            }
+          }
+        },
+        {
+          "name": "Crear calificacion",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/calificaciones",
+              "host": ["{{base_url}}"],
+              "path": ["api", "calificaciones"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_matricula\": 1,\n  \"id_curso_asignatura\": 3,\n  \"nota\": 9.5,\n  \"observacion\": \"Buen desempeno en el parcial\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver calificacion",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/calificaciones/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "calificaciones", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar calificacion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/calificaciones/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "calificaciones", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_matricula\": 1,\n  \"id_curso_asignatura\": 3,\n  \"nota\": 8.8,\n  \"observacion\": \"Retroalimentacion entregada\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar calificacion",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/calificaciones/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "calificaciones", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "item": [
+        {
+          "name": "Listar reportes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reportes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reportes"]
+            }
+          }
+        },
+        {
+          "name": "Crear reporte",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reportes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reportes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Informe de progreso\",\n  \"descripcion\": \"Resumen de desempeño del curso\",\n  \"tipo\": \"Acad\",\n  \"id_curso\": 2,\n  \"id_docente\": 7,\n  \"id_periodo\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver reporte",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reportes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reportes", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar reporte",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reportes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reportes", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Informe final\",\n  \"descripcion\": \"Evaluacion del periodo lectivo\",\n  \"tipo\": \"Acad\",\n  \"id_curso\": 2,\n  \"id_docente\": 7,\n  \"id_periodo\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar reporte",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reportes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reportes", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DatosFamiliares",
+      "item": [
+        {
+          "name": "Listar datos familiares",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/datosfamiliares",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datosfamiliares"]
+            }
+          }
+        },
+        {
+          "name": "Crear datos familiares",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/datosfamiliares",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datosfamiliares"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estudiante\": 10,\n  \"nombre_padre\": \"Carlos Lopez\",\n  \"telefono_padre\": \"0999999999\",\n  \"nombre_madre\": \"Ana Perez\",\n  \"telefono_madre\": \"0988888888\",\n  \"direccion_familiar\": \"Av Siempre Viva 123\",\n  \"parentesco_representante\": \"Madre\",\n  \"nombre_representante\": \"Ana Perez\",\n  \"ocupacion_representante\": \"Ingeniera\",\n  \"telefono_representante\": \"0988888888\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver datos familiares",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/datosfamiliares/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datosfamiliares", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar datos familiares",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/datosfamiliares/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datosfamiliares", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estudiante\": 10,\n  \"nombre_padre\": \"Carlos Lopez\",\n  \"telefono_padre\": \"0977777777\",\n  \"nombre_madre\": \"Ana Perez\",\n  \"telefono_madre\": \"0966666666\",\n  \"direccion_familiar\": \"Av Siempre Viva 123\",\n  \"parentesco_representante\": \"Padre\",\n  \"nombre_representante\": \"Carlos Lopez\",\n  \"ocupacion_representante\": \"Administrador\",\n  \"telefono_representante\": \"0977777777\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar datos familiares",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/datosfamiliares/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datosfamiliares", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PeriodosLectivos",
+      "item": [
+        {
+          "name": "Listar periodos lectivos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/periodoslectivos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "periodoslectivos"]
+            }
+          }
+        },
+        {
+          "name": "Crear periodo lectivo",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/periodoslectivos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "periodoslectivos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Periodo 2024-2025\",\n  \"fecha_inicio\": \"2024-09-01\",\n  \"fecha_fin\": \"2025-06-30\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver periodo lectivo",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/periodoslectivos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "periodoslectivos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar periodo lectivo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/periodoslectivos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "periodoslectivos", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Periodo 2025-2026\",\n  \"fecha_inicio\": \"2025-09-01\",\n  \"fecha_fin\": \"2026-06-30\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar periodo lectivo",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/periodoslectivos/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "periodoslectivos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chats",
+      "item": [
+        {
+          "name": "Listar chats",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chats"]
+            }
+          }
+        },
+        {
+          "name": "Crear chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chats"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Chat curso primero B\",\n  \"tipo\": \"grupo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver chat",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chats/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chats", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar chat",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chats/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chats", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Chat directiva\",\n  \"tipo\": \"privado\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar chat",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chats/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chats", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ChatUsers",
+      "item": [
+        {
+          "name": "Listar chat users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chatusers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chatusers"]
+            }
+          }
+        },
+        {
+          "name": "Crear chat user",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chatusers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chatusers"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_chat\": 1,\n  \"id_usuario\": 5,\n  \"rol\": \"admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver chat user",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chatusers/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chatusers", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar chat user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chatusers/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chatusers", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_chat\": 1,\n  \"id_usuario\": 6,\n  \"rol\": \"miembro\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar chat user",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/chatusers/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "chatusers", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mensajes",
+      "item": [
+        {
+          "name": "Listar mensajes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mensajes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mensajes"]
+            }
+          }
+        },
+        {
+          "name": "Crear mensaje",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mensajes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mensajes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_chat\": 1,\n  \"id_usuario\": 5,\n  \"contenido\": \"Hola equipo, recuerden la reunion a las 10am\",\n  \"fecha_envio\": \"2024-05-20T09:30:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver mensaje",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mensajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mensajes", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar mensaje",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mensajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mensajes", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_chat\": 1,\n  \"id_usuario\": 5,\n  \"contenido\": \"Reunion movida a las 11am\",\n  \"fecha_envio\": \"2024-05-20T10:15:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar mensaje",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mensajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mensajes", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

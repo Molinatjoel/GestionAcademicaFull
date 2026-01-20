@@ -1,0 +1,107 @@
+.layout-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, rgba(124, 108, 255, 0.14), rgba(90, 200, 250, 0.08));
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 0 18px rgba(124, 108, 255, 0.55);
+}
+
+.brand__title {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.brand__muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.userbox {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.userbox__info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.layout-main {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 0;
+  flex: 1;
+}
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  padding: 1.25rem 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.navlink {
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navlink:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border);
+}
+
+.navlink--active {
+  color: var(--text);
+  background: rgba(124, 108, 255, 0.12);
+  border-color: rgba(124, 108, 255, 0.35);
+  box-shadow: 0 10px 30px rgba(124, 108, 255, 0.18);
+}
+
+.layout__content {
+  padding: 1.5rem 1.75rem 2rem;
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .layout-main {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}

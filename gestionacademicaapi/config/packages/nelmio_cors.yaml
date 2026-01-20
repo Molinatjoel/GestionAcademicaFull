@@ -1,0 +1,19 @@
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        allow_origin: ['^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$', '^http://frontend(:[0-9]+)?$']
+        allow_credentials: true
+        allow_headers: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
+        expose_headers: ['Authorization']
+        max_age: 3600
+
+    paths:
+        '^/':
+            origin_regex: true
+            allow_origin: ['^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$', '^http://frontend(:[0-9]+)?$']
+            allow_credentials: true
+            allow_headers: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
+            allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
+            expose_headers: ['Authorization']
+            max_age: 3600
