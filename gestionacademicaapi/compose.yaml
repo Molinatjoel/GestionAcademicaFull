@@ -1,28 +1,75 @@
-# Docker Compose file for Gestion Academica API
+version: "3.9"
+
 services:
-###> doctrine/doctrine-bundle ###
-  # Esta es la base de datos PostgreSQL que se utiliza en la aplicación 
-  # Configuración básica, se pueden ajustar más parámetros según sea necesario
-  # Contenedor de la base de datos
+  ###> doctrine/doctrine-bundle ###
+  # =========================
+  # Base de datos principal
+  # =========================
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
-      # Deben cambiar estas credenciales en producción
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
       POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-d",
+          "${POSTGRES_DB:-app}",
+          "-U",
+          "${POSTGRES_USER:-app}",
+        ]
       timeout: 5s
       retries: 5
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    ports:
+      - "5432:5432"
 
-  # Contenedor del backend
+  # =========================
+  # Copia espejo de la BD
+  # =========================
+  database_mirror:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    environment:
+      POSTGRES_DB: app_mirror
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+    healthcheck:
+      test:
+        ["CMD", "pg_isready", "-d", "app_mirror", "-U", "${POSTGRES_USER:-app}"]
+    volumes:
+      - database_mirror_data:/var/lib/postgresql/data:rw
+
+  # =========================
+  # Base de datos de archivo
+  # =========================
+  database_archive:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    environment:
+      POSTGRES_DB: app_archive
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-d",
+          "app_archive",
+          "-U",
+          "${POSTGRES_USER:-app}",
+        ]
+    volumes:
+      - database_archive_data:/var/lib/postgresql/data:rw
+  ###< doctrine/doctrine-bundle ###
+
+  # =========================
+  # Backend (Symfony / API)
+  # =========================
   app:
     build:
       context: .
@@ -32,7 +79,6 @@ services:
       APP_DEBUG: ${APP_DEBUG:-1}
       DATABASE_URL: ${DATABASE_URL:-postgresql://app:!ChangeMe!@database:5432/app?serverVersion=16&charset=utf8}
       JWT_SECRET: ${JWT_SECRET}
-      # Aqui van las variables de entorno para Mercure (La tecnologia para el chat)
       MERCURE_URL: ${MERCURE_URL}
       MERCURE_PUBLIC_URL: ${MERCURE_PUBLIC_URL}
       MERCURE_JWT_SECRET: ${MERCURE_JWT_SECRET}
@@ -40,7 +86,10 @@ services:
       - database
     networks:
       - default
-  # Contenedor del servidor web
+
+  # =========================
+  # Servidor Web (NGINX)
+  # =========================
   web:
     image: nginx:1.27-alpine
     depends_on:
@@ -53,6 +102,9 @@ services:
     networks:
       - default
 
+  # =========================
+  # Frontend (Vite)
+  # =========================
   frontend:
     build:
       context: ../frontend
@@ -72,8 +124,47 @@ services:
     networks:
       - default
 
+  # =========================
+  # Mercure (Chat / tiempo real)
+  # =========================
+  mercure:
+    image: dunglas/mercure:v0.17
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ":80"
+      MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY}
+      MERCURE_EXTRA_DIRECTIVES: ""
+      MERCURE_PUBLISH_ALLOWED_ORIGINS: "*"
+      MERCURE_CORS_ALLOWED_ORIGINS: ${MERCURE_CORS_ALLOWED_ORIGINS}
+    ports:
+      - "3000:80"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/.well-known/mercure"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  ###> symfony/mailer ###
+  # =========================
+  # Mailer (Mailpit)
+  # =========================
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+###< symfony/mailer ###
+
+# =========================
+# Volúmenes persistentes
+# =========================
 volumes:
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
+  database_mirror_data:
+  database_archive_data:
   frontend_node_modules:
